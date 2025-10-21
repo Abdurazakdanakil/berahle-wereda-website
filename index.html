@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Official website of Berahle Wereda, Afar Region, Ethiopia. Explore the Danakil Depression, public services, and vibrant Afar culture.">
+    <meta name="keywords" content="Berahle Wereda, Afar Region, Danakil Depression, tourism, public services, Ethiopia">
+    <meta name="author" content="Berahle Wereda Administration">
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Berahle Wereda - Official Website">
+    <meta property="og:description" content="Discover Berahle Wereda, home to the Danakil Depression, vibrant Afar culture, and essential public services in Ethiopia's Afar Region.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630?text=Berahle+Wereda">
+    <meta property="og:url" content="https://berahle.gov.et">
+    <meta property="og:type" content="website">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Berahle Wereda - Official Website">
+    <meta name="twitter:description" content="Discover Berahle Wereda, home to the Danakil Depression, vibrant Afar culture, and essential public services in Ethiopia's Afar Region.">
+    <meta name="twitter:image" content="https://via.placeholder.com/1200x630?text=Berahle+Wereda">
+    <title>Berahle Wereda - Official Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add Leaflet CSS -->
+    <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" >
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --ethio-green: #078930;
+            --ethio-yellow: #fcdd09;
+            --ethio-red: #da121a;
+            --ethio-blue: #0f47af;
+            --dark-blue: #2c3e50;
+            --light-bg: #f8f9fa;
+            --volcanic-orange: #FF6B35;
+            --salt-white: #F5F5F5;
+            --sulfur-yellow: #FFD700;
+            --lava-red: #DC143C;
+            --mineral-green: #2E8B57;
+            --card-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+            --admin-color: #1976d2;
+            --admin-bg: #e3f2fd;
+            --economic-color: #388e3c;
+            --economic-bg: #e8f5e9;
+            --social-color: #f57c00;
+            --social-bg: #fff3e0;
+            --justice-color: #c2185b;
+            --justice-bg: #fce4ec;
+            --health-color: #303f9f;
+            --health-bg: #e8eaf6;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-bg);
+        }
+
+        section[id] {
+            scroll-margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--ethio-green) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--ethio-yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--ethio-red);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--ethio-green);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3') center/cover;
+            color: white;
+            text-align: center;
+            padding: 150px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .hero-btn.primary {
+            background: var(--ethio-yellow);
+            color: var(--dark-blue);
+        }
+
+        .hero-btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--ethio-green);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--ethio-green);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: var(--transition);
+            border-top: 5px solid var(--ethio-green);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--ethio-green);
+        }
+
+        .feature-link {
+            color: var(--ethio-green);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .feature-link:hover {
+            color: var(--dark-blue);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .administrative .card-icon { background: #e3f2fd; color: #1976d2; }
+        .social .card-icon { background: #e8f5e9; color: #388e3c; }
+        .education-health .card-icon { background: #fff3e0; color: #f57c00; }
+
+        .card-title h3 {
+            margin-bottom: 5px;
+            color: var(--dark-blue);
+            font-size: 1.3rem;
+        }
+
+        .card-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .administrative .card-badge { background: #e3f2fd; color: #1976d2; }
+        .social .card-badge { background: #e8f5e9; color: #388e3c; }
+        .education-health .card-badge { background: #fff3e0; color: #f57c00; }
+
+        .card-body {
+            padding: 20px 25px;
+            flex-grow: 1;
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .service-features li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .service-features li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--ethio-green);
+            font-weight: bold;
+        }
+
+        .requirements {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .requirements h4 {
+            margin-bottom: 10px;
+            color: var(--dark-blue);
+            font-size: 0.9rem;
+        }
+
+        .requirements li {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+            font-size: 0.85rem;
+        }
+
+        .requirements li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--ethio-green);
+        }
+
+        .card-footer {
+            padding: 0 25px 25px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 20px;
+        }
+
+        .service-btn {
+            background: var(--ethio-green);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: center;
+            width: 100%;
+        }
+
+        .service-btn:hover {
+            background: var(--dark-blue);
+        }
+
+        .tourism-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .tourism-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .tourism-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tourism-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .tourism-content {
+            padding: 20px;
+        }
+
+        .tourism-link {
+            color: var(--ethio-green);
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .tourism-link:hover {
+            color: var(--dark-blue);
+        }
+
+        .details-hidden {
+            display: none;
+        }
+
+        .details-visible {
+            display: block;
+        }
+
+        .tourism-details {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .tourism-details img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tourism-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .tourism-details th, .tourism-details td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .tourism-details th {
+            background: var(--ethio-green);
+            color: white;
+        }
+
+        .tourism-details td {
+            background: #f8f9fa;
+        }
+
+        .faq-section {
+            background: var(--light-bg);
+            padding: 60px 0;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .faq-question {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: var(--dark-blue);
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 20px 20px;
+            color: #666;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-toggle {
+            content: '-';
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .contact-info h2, .contact-form h2 {
+            position: relative;
+            margin-bottom: 30px;
+            color: var(--dark-blue);
+        }
+
+        .contact-info h2:after, .contact-form h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--ethio-green);
+            border-radius: 2px;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--ethio-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-blue);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--ethio-green);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(7,137,48,0.1);
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--ethio-green);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: var(--dark-blue);
+        }
+
+        .form-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .form-message.success {
+            background: var(--ethio-green);
+            color: white;
+        }
+
+        .form-message.error {
+            background: var(--ethio-red);
+            color: white;
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .department-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .department-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .department-card .card-header {
+            padding: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .department-card .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .administration .card-icon { background: var(--admin-bg); color: var(--admin-color); }
+        .economic .card-icon { background: var(--economic-bg); color: var(--economic-color); }
+        .social .card-icon { background: var(--social-bg); color: var(--social-color); }
+        .justice .card-icon { background: var(--justice-bg); color: var(--justice-color); }
+        .health .card-icon { background: var(--health-bg); color: var(--health-color); }
+
+        .department-card .card-body {
+            padding: 20px 25px;
+            flex-grow: 1;
+        }
+
+        .card-button {
+            background: var(--ethio-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+        }
+
+        .administration .card-button { background: var(--admin-color); }
+        .economic .card-button { background: var(--economic-color); }
+        .social .card-button { background: var(--social-color); }
+        .justice .card-button { background: var(--justice-color); }
+        .health .card-button { background: var(--health-color); }
+
+        .card-button:hover {
+            background: var(--dark-blue);
+        }
+
+        .about-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+        }
+
+        .about-content h3 {
+            color: var(--dark-blue);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .about-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .about-content ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .about-content ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .about-content ul li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--ethio-green);
+            font-weight: bold;
+        }
+
+        .about-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .about-table th, .about-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .about-table th {
+            background: var(--ethio-green);
+            color: white;
+        }
+
+        .about-table td {
+            background: #f8f9fa;
+        }
+
+        /* Map Styles */
+        .about-map {
+            height: 400px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .map-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: var(--ethio-green);
+            background: rgba(255,255,255,0.8);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .map-info {
+            background: var(--ethio-green);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 40px 0;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--ethio-yellow);
+        }
+
+        .social-links a {
+            color: white;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive Tables */
+        .about-table, .tourism-details table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: var(--dark-blue);
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                padding: 20px;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-table, .tourism-details table {
+                font-size: 0.9rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-container">
+                <div class="logo">
+                    <div class="logo-icon">BW</div>
+                    <h1>Berahle Wereda</h1>
+                </div>
+                <nav id="main-nav" aria-label="Main navigation">
+                    <ul>
+                        <li><a href="#home" class="active">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#tourism">Tourism</a></li>
+                        <li><a href="#departments">Departments</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="mobile-menu" onclick="toggleMenu()" aria-label="Toggle mobile menu" role="button" tabindex="0" aria-expanded="false">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" aria-labelledby="home-title">
+            <div class="hero">
+                <div class="container">
+                    <h2 id="home-title">Welcome to Berahle Wereda</h2>
+                    <p>Discover the heart of Afar Region, home to the Danakil Depression, vibrant culture, and dedicated public services.</p>
+                    <div class="hero-buttons">
+                        <a href="#tourism" class="hero-btn primary">Explore Tourism</a>
+                        <a href="#services" class="hero-btn secondary">View Services</a>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users" aria-hidden="true"></i></div>
+                        <div class="stat-number">~95,000</div>
+                        <div class="stat-label">Population</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-volcano" aria-hidden="true"></i></div>
+                        <div class="stat-number">5+</div>
+                        <div class="stat-label">Active Volcanoes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-level-down-alt" aria-hidden="true"></i></div>
+                        <div class="stat-number">125m</div>
+                        <div class="stat-label">Below Sea Level</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users" aria-hidden="true"></i></div>
+                        <div class="stat-number">99%</div>
+                        <div class="stat-label">Afar Ethnicity</div>
+                    </div>
+                </div>
+                <div class="features">
+                    <div class="section-title">
+                        <h2>Why Berahle Wereda?</h2>
+                        <p>Explore our unique blend of natural wonders and community services</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-globe-africa" aria-hidden="true"></i></div>
+                            <h3>Unique Geography</h3>
+                            <p>Home to the Danakil Depression, one of the lowest and hottest places on Earth.</p>
+                            <a href="#about" class="feature-link">Learn More</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-users" aria-hidden="true"></i></div>
+                            <h3>Rich Culture</h3>
+                            <p>Experience the vibrant traditions of the Afar people, from music to craftsmanship.</p>
+                            <a href="#about" class="feature-link">Discover Culture</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-hands-helping" aria-hidden="true"></i></div>
+                            <h3>Public Services</h3>
+                            <p>Access a range of government services designed to support our community.</p>
+                            <a href="#services" class="feature-link">View Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" aria-labelledby="about-title">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="about-title">About Berahle Wereda</h2>
+                    <p>Learn about our unique region and its vibrant community</p>
+                </div>
+                <div class="about-content">
+                    <h3>Comprehensive Berahle Woreda Overview (Updated October 2025)</h3>
+                    <p><strong>Berahle Woreda</strong> (also Berhale or Berahile) is a dynamic rural district in <strong>Administrative Zone 2</strong> of Ethiopia's <strong>Afar Region</strong>, serving as a vital gateway to the otherworldly Danakil Depression. This arid rift valley landscape, one of Earth's hottest and lowest points, supports resilient Afar pastoralists while emerging as an eco-tourism hotspot. Amid recent challenges like seismic activity and health initiatives, Berahle blends ancient traditions with development efforts. <strong>Latest: A 6.2 magnitude earthquake on October 11, 2025, damaged homes in Berahle, injuring dozens and displacing ~2,000 residents; relief from NGOs like Africa Humanitarian Action (AHA) is underway.</strong></p>
+                    
+                    <!-- Map Section -->
+                    <div class="map-info">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Berahle Woreda Location Map
+                    </div>
+                    <div id="berahle-map" class="about-map">
+                        <div class="map-loading">Loading map...</div>
+                    </div>
+                    
+                    <h3>Key Facts</h3>
+                    <table class="about-table">
+                        <tr><th>Attribute</th><th>Details</th></tr>
+                        <tr><td>Location</td><td>Afar Zone 2; 13°50'N, 40°20'E</td></tr>
+                        <tr><td>Area</td><td>2,509 km²</td></tr>
+                        <tr><td>Population</td><td>78,881 (2007); <strong>Est. 95,000 (2025)</strong></td></tr>
+                        <tr><td>Capital</td><td>Berahle Town (~8,500 residents)</td></tr>
+                        <tr><td>Ethnicity</td><td>99% Afar; Afar language dominant</td></tr>
+                        <tr><td>Economy</td><td>Pastoralism (camels/goats); <strong>Salt mining (50,000 tons/year)</strong></td></tr>
+                        <tr><td>Climate</td><td>Arid steppe (BSh); avg. 35–40°C (Oct 2025 highs: 38°C)</td></tr>
+                        <tr><td>Challenges</td><td>Drought, seismic risks; <strong>2025 quake: 200+ homes damaged</strong></td></tr>
+                    </table>
+                    <h3>Geography & Borders</h3>
+                    <p>Berahle's terrain spans volcanic plains, salt flats, and seasonal wadis in the Afar Depression (-125m elevation). Borders: South (Afdera/Abala), West/SW (Koneba/Tigray), North (Dallol), NE (Eritrea). <strong>Update: Recent seismic tremors (Oct 2025) cracked roads in nearby Durfli Kebele, prompting evacuations of ~55,000 in Afar.</strong> Lake Karum (Assale) dominates, supporting salt extraction.</p>
+                    <h3>Demographics (2007 Census; 2025 Est.)</h3>
+                    <ul>
+                        <li><strong>Total</strong>: 78,881 (45,501 men; 33,380 women); <strong>2025: ~95,000 (urban: 10%)</strong></li>
+                        <li><strong>Density</strong>: 31/km²; households: 11,402 (avg. 6.9 persons)</li>
+                        <li><strong>Urban</strong>: 7.7% (~6,098); pastoralists: 9.3% (~7,353)</li>
+                        <li><strong>Town</strong>: Berahle pop. ~6,098 (2007); <strong>8,500 (2025)</strong></li>
+                    </ul>
+                    <table class="about-table">
+                        <tr><th>Category</th><th>2007 Data</th><th>2025 Est.</th></tr>
+                        <tr><td>Total Pop.</td><td>78,881</td><td>~95,000</td></tr>
+                        <tr><td>Urban %</td><td>7.7%</td><td>10%</td></tr>
+                        <tr><td>Pastoralists</td><td>9.3%</td><td>8% (decline due to sedentarization)</td></tr>
+                    </table>
+                    <h3>Economy & Livelihood</h3>
+                    <p>Subsistence pastoralism dominates (camels for trade; goats/sheep for milk/meat), with limited sorghum farming in wadis. <strong>Salt mining surged: 15% of Ethiopia's output (~50,000 tons, 2024); exports to Eritrea via 2,500 camels/year.</strong> Geothermal potential at Erta Ale ($20M project, 5MW by 2026). Challenges: 2024-2025 drought killed 70% herds; aid from FAO/UNICEF aids recovery. <strong>New: AHA/Farmamundi health project launched Sep 2025, targeting 10,000 in Berahle for nutrition/WASH.</strong></p>
+                    <h3>Infrastructure & Services (2025 Updates)</h3>
+                    <table class="about-table">
+                        <tr><th>Sector</th><th>Status</th></tr>
+                        <tr><td>Roads</td><td>236km gravel; <strong>Afdera-Berahle paving (2026 completion)</strong></td></tr>
+                        <tr><td>Water</td><td>13% access (2008); <strong>80% via 12 UN boreholes (2025)</strong></td></tr>
+                        <tr><td>Energy</td><td>120kW generator (2006); <strong>Solar for 5 schools + 200kW grid</strong></td></tr>
+                        <tr><td>Health</td><td>Berahle Hospital (50 beds); <strong>New maternity wing; AHA emergency project post-quake</strong></td></tr>
+                        <tr><td>Education</td><td>Grades 1-8; literacy ~15%; <strong>1,800 students; solar electrification</strong></td></tr>
+                    </table>
+                    <h3>History & Culture</h3>
+                    <p>Tied to Afar trade routes since antiquity; Tigrayan influences in architecture. <strong> 2022 Tigray War shelling; 2025 Tigray-Afar clashes near Berahle urged dialogue by interim admin.</strong> Culture: Gerra Festival (Jan camel races, ~5,000 attendees); Fuga dances; markets blend Afar spices/Tigrayan injera. <strong>90% Afar ethnicity; oral traditions preserve nomadic heritage.</strong></p>
+                    <h3>Current Status & Challenges (Oct 2025)</h3>
+                    <p>Stable post-2022 war, but <strong>Oct 11 quake (M6.2) caused injuries/displacement; AHA coordinating relief.</strong> Drought recovery ongoing; tourism up 25% (5,000+ visitors). <strong>Travel Advisory: High caution (UK/US: heat, borders, seismic risks).</strong> Contact: Afar Bureau (+251-33-666-2000); Berahle Office (+251-957-909-085).</p>
+                    <p><strong>Source</strong>: 2025 Updates from Ethiopia CSA, Afar Gov't, UN OCHA/FAO, and local reports.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" aria-labelledby="services-title">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="services-title">Our Services</h2>
+                    <p>Access a wide range of government services designed to meet your needs</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card administrative">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-landmark" aria-hidden="true"></i>
+                            </div>
+                            <div class="card-title">
+                                <h3>Administrative Services</h3>
+                                <span class="card-badge">Government</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-description">Essential administrative services including ID issuance, business registration, and legal documentation.</p>
+                            <ul class="service-features">
+                                <li>ID Card Issuance</li>
+                                <li>Business Registration</li>
+                                <li>Land Documentation</li>
+                                <li>Legal Certificates</li>
+                                <li>Permit Applications</li>
+                            </ul>
+                            <div class="requirements">
+                                <h4>Required Documents:</h4>
+                                <ul>
+                                    <li>Proof of Identity</li>
+                                    <li>Proof of Residence</li>
+                                    <li>Recent Photographs</li>
+                                    <li>Application Forms</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="service-btn">Apply Now</a>
+                        </div>
+                    </div>
+                    <div class="service-card social">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                            </div>
+                            <div class="card-title">
+                                <h3>Social Services</h3>
+                                <span class="card-badge">Community</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-description">Support services for community welfare, including social assistance programs and family support.</p>
+                            <ul class="service-features">
+                                <li>Social Assistance Programs</li>
+                                <li>Family Support Services</li>
+                                <li>Community Development</li>
+                                <li>Elderly Care Support</li>
+                                <li>Disability Services</li>
+                            </ul>
+                            <div class="requirements">
+                                <h4>Eligibility:</h4>
+                                <ul>
+                                    <li>Residency in Berahle Wereda</li>
+                                    <li>Income Verification</li>
+                                    <li>Family Status Documentation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="service-btn">Get Support</a>
+                        </div>
+                    </div>
+                    <div class="service-card education-health">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-user-graduate" aria-hidden="true"></i>
+                            </div>
+                            <div class="card-title">
+                                <h3>Education & Health</h3>
+                                <span class="card-badge">Essential</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-description">Access to educational opportunities and healthcare services for all residents of Berahle Wereda.</p>
+                            <ul class="service-features">
+                                <li>School Registration</li>
+                                <li>Health Clinic Services</li>
+                                <li>Vaccination Programs</li>
+                                <li>Adult Education</li>
+                                <li>Maternal Health Services</li>
+                            </ul>
+                            <div class="requirements">
+                                <h4>Available Services:</h4>
+                                <ul>
+                                    <li>Primary Healthcare</li>
+                                    <li>School Enrollment</li>
+                                    <li>Health Education</li>
+                                    <li>Immunization</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="service-btn">Access Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tourism Section -->
+        <section id="tourism" aria-labelledby="tourism-title">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="tourism-title">Tourism Highlights</h2>
+                    <p>Explore the breathtaking attractions of the Danakil Depression</p>
+                </div>
+                <div class="tourism-grid">
+                    <div class="tourism-card">
+                        <div class="tourism-image" style="background: linear-gradient(45deg, var(--volcanic-orange), var(--ethio-red));"></div>
+                        <div class="tourism-content">
+                            <h3>Erta Ale Volcano</h3>
+                            <p>Visit one of the few permanent lava lakes in the world with spectacular night views of molten lava.</p>
+                            <button class="tourism-link" onclick="toggleDetails('erta-ale-details')">Toggle Details</button>
+                            <a href="#contact" class="tourism-link">Plan Your Visit</a>
+                            <div id="erta-ale-details" class="tourism-details details-hidden">
+                                <h2>Detailed Erta Ale Volcano Guide 2025 (The Ultimate Visitor's Handbook)</h2>
+                                <p>Erta Ale Volcano—known as the "Smoking Mountain" in Afar or the "Gateway to Hell"—is one of Earth's most mesmerizing and extreme natural wonders. This basaltic shield volcano in Ethiopia's Afar Region sits in the heart of the Danakil Depression, a scorching rift valley below sea level where tectonic plates pull apart. At 613 meters (2,011 ft) tall, it's famed for hosting one of the world's rare persistent lava lakes, bubbling with molten rock since 1967. As part of the Afar Triangle, it's a geological hotspot where Africa is slowly splitting, offering a glimpse into planetary forces. But it's not for casual travelers: extreme heat, remote access, and security risks make it an adventure for the prepared. In 2025, tourism is rebounding post-conflict, with better infrastructure, but safety remains paramount.</p>
+                                <img src="https://via.placeholder.com/600x400?text=Erta+Ale+Volcano" alt="The glowing lava lake at Erta Ale, a hypnotic sight under the stars." style="display:block; margin:0 auto; width:100%; border-radius:10px; margin-bottom:20px;">
+                                <table>
+                                    <tr><th>Key Facts</th><th>Details</th></tr>
+                                    <tr><td>Location</td><td>Danakil Depression, Afar Region, Ethiopia (13.600°N, 40.666°E)</td></tr>
+                                    <tr><td>Type</td><td>Shield Volcano (Basaltic)</td></tr>
+                                    <tr><td>Elevation</td><td>613 m (2,011 ft)</td></tr>
+                                    <tr><td>Last Major Eruption</td><td>Ongoing since 1967; explosive shift July 2025</td></tr>
+                                    <tr><td>Lava Lakes</td><td>1–2 active pits (up to 300m diameter, 15m deep)</td></tr>
+                                    <tr><td>UNESCO Status</td><td>Part of Danakil UNESCO Global Geopark (proposed)</td></tr>
+                                    <tr><td>Annual Visitors</td><td>~5,000 (2025 est.; up 25% from 2024)</td></tr>
+                                </table>
+                                <h3>Current Volcanic Status (As of October 19, 2025)</h3>
+                                <p>Erta Ale remains one of the planet's most active volcanoes, with continuous eruptions listed through September 2025. Recent activity includes:</p>
+                                <ul>
+                                    <li>July 2025 Shift: From effusive lava flows to more explosive events, including an ash plume on July 15 and a dike intrusion by July 25, raising concerns about potential caldera changes.</li>
+                                    <li>Lava Lake Updates: The northern crater's lava lake (300m wide) is active but variable; the southern pit features a growing hornito (steep cone).</li>
+                                    <li>Seismic Activity: No significant earthquakes near Erta Ale on October 17, 2025. Thermal anomalies persist via satellite.</li>
+                                    <li>2025 Outlook: Activity is "variable" but stable for tours; check Smithsonian Global Volcanism Program for real-time alerts.</li>
+                                </ul>
+                                <img src="https://via.placeholder.com/300x200?text=Erta+Ale+Crater" alt="Aerial view of Erta Ale’s dual craters, steaming in the vast Danakil landscape." style="float:left; width:50%; margin-right:20px; margin-bottom:20px;">
+                                <p>Note: Volcanic behavior can change rapidly—always verify with tour operators or the Ethiopian Geological Institute before travel.</p>
+                                <div style="clear:both;"></div>
+                                <h3>Why Visit Erta Ale? Top Highlights</h3>
+                                <p>Erta Ale isn't just a volcano—it's a surreal, otherworldly experience in one of Earth's harshest environments. Key attractions include:</p>
+                                <ol>
+                                    <li>Persistent Lava Lake: Peer into bubbling molten lava (up to 1,200°C) from the crater rim— a rare sight, with glowing fissures cracking the black crust at night.</li>
+                                    <li>Crater Rim Camping: Sleep under stars near the summit, with the lava's roar as your soundtrack (basic huts or tents provided).</li>
+                                    <li>Geological Wonders: Explore the 1.7km x 0.6km elliptical caldera, pit craters, and vast lava fields.</li>
+                                    <li>Afar Culture: Interact with nomadic Afar people; witness salt caravans and traditional dances.</li>
+                                    <li>Combined Adventures: Often paired with Dallol's colorful acid pools or Lake Karum's salt flats for a full Danakil tour.</li>
+                                </ol>
+                                <p>Pro Tip: Night visits are magical—the lava glows brightest after dark, creating an "alien" spectacle.</p>
+                                <h3>How to Get There & Suggested Itineraries</h3>
+                                <p>Erta Ale is remote—no public transport or independent access. All visits require organized tours with 4x4 vehicles, armed escorts, and permits. Start from Mekele (Tigray) or Semera (Afar capital).</p>
+                                <ul>
+                                    <li>By Air/Road: Fly to Mekele (daily from Addis Ababa, ~$100) or Semera. Then, 4x4 convoy (6–8 hrs drive) to base camp at Dodom (10km from summit). Road: Gravel/off-road; new paving to Afdera by 2026.</li>
+                                    <li>Hike: 3–4 hr trek from Dodom to rim (easy-moderate, but hot; start at sunset). Camels available for gear or riders (~$20).</li>
+                                    <li>Permits: Handled by tours; include Afar entry (~$30).</li>
+                                </ul>
+                                <table>
+                                    <tr><th>Duration</th><th>Highlights</th><th>Cost (USD, Per Person)</th><th>Operators</th></tr>
+                                    <tr><td>2–3 Days (Erta Ale Focus)</td><td>Drive from Semera, hike, overnight at rim, lava viewing, return.</td><td>$250–400 (group)</td><td>Volcano Adventures, Liyu Ethiopia Tours</td></tr>
+                                    <tr><td>4–6 Days (Danakil Full)</td><td>Erta Ale + Dallol colors, salt mines, Lake Afdera; 2 nights at volcano.</td><td>$500–800 (incl. meals, escort)</td><td>GetYourGuide, Magical Gorilla Adventures, Brilliant Ethiopia</td></tr>
+                                    <tr><td>Luxury 7+ Days</td><td>Private 4x4, eco-camps, geothermal sites; add Tigray rock churches.</td><td>$1,000+</td><td>Jacada Travel</td></tr>
+                                </table>
+                                <p>Day-by-Day Example (4-Day Tour):</p>
+                                <ul>
+                                    <li>Day 1: Fly to Mekele/Semera; drive to Afdera, permits, overnight.</li>
+                                    <li>Day 2: To Dodom base; evening hike to rim, lava gazing.</li>
+                                    <li>Day 3: Summit exploration, descend; visit Dallol.</li>
+                                    <li>Day 4: Salt mines, return flight.</li>
+                                </ul>
+                                <h3>Practical Travel Tips for 2025</h3>
+                                <h4>Best Time to Visit</h4>
+                                <ul>
+                                    <li>Oct–Mar: Milder heat (25–35°C); dry for safe hikes. Peak: Nov–Jan.</li>
+                                    <li>Avoid Apr–Sep: Monsoons, floods; temps hit 50°C+.</li>
+                                    <li>2025 Events: No festivals, but book early for post-rainy season (Oct).</li>
+                                </ul>
+                                <h4>Where to Stay & Eat</h4>
+                                <ul>
+                                    <li>Accommodations: Basic summit huts/mattresses (no amenities); eco-camps at Dodom (tents, solar showers). Luxury: New solar-powered lodges (~$45/night).</li>
+                                    <li>Food: Tour-provided injera, goat stew, camel milk; pack electrolytes. Markets in Berahle (nearby) for snacks.</li>
+                                </ul>
+                                <h4>Budget Breakdown (Per Person, 4-Day Tour)</h4>
+                                <table>
+                                    <tr><th>Item</th><th>Cost (USD)</th></tr>
+                                    <tr><td>Tour Package</td><td>$500–700</td></tr>
+                                    <tr><td>Flights (Addis-Mekele RT)</td><td>$200</td></tr>
+                                    <tr><td>Food/Extras</td><td>$50</td></tr>
+                                    <tr><td>Tips/Permits/Escort</td><td>$50–100</td></tr>
+                                    <tr><td>Total</td><td>~$800–1,050</td></tr>
+                                </table>
+                                <h3>Health & Safety Essentials</h3>
+                                <p>Erta Ale is high-risk—extreme environment meets geopolitical tensions. UK/US Advisory (Oct 2025): High caution; avoid borders with Eritrea.</p>
+                                <ul>
+                                    <li>Volcanic Risks: Fumes, unstable rims, sudden eruptions—stay 5m+ from edges; no safety barriers.</li>
+                                    <li>Heat/Dehydration: 5L water/day; UV clothing, electrolytes; trek at night.</li>
+                                    <li>Security: Mandatory armed guards/police (~$20/day); history of attacks (2012 killings, 2017 shooting). No solo travel—use licensed operators like ETT or Volcano Adventures.</li>
+                                    <li>Health: Vaccinations (yellow fever, typhoid); malaria meds; insurance mandatory. Nearest hospital: Berahle (basic).</li>
+                                    <li>Cultural Etiquette: Respect Afar customs; ask before photos; tip guides (200 ETB/day).</li>
+                                    <li>Other Hazards: Landmines, banditry, flash floods—follow guides strictly.</li>
+                                </ul>
+                                <p>Insider Tip: For sustainability, choose eco-tours supporting Afar communities. If unfit, opt for drone views or helicopter add-ons (~$200).</p>
+                                <p>For bookings or updates, contact Afar Tourism Bureau (+251-33-666-2000) or sites like GetYourGuide. Safe travels to this fiery marvel! 😊</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tourism-card">
+                        <div class="tourism-image" style="background: linear-gradient(45deg, var(--sulfur-yellow), var(--mineral-green));"></div>
+                        <div class="tourism-content">
+                            <h3>Dallol Sulfur Springs</h3>
+                            <p>Witness an alien landscape of vibrant colors created by volcanic activity and mineral deposits.</p>
+                            <button class="tourism-link" onclick="toggleDetails('dallol-details')">Toggle Details</button>
+                            <a href="#contact" class="tourism-link">Plan Your Visit</a>
+                            <div id="dallol-details" class="tourism-details details-hidden">
+                                <h2>Detailed Dallol Sulfur Springs Guide 2025 (The Ultimate Visitor's Handbook)</h2>
+                                <p>Dallol Sulfur Springs—often dubbed the "Alien Landscape" or "Hell on Earth"—is a mesmerizing hydrothermal field in Ethiopia's Danakil Depression, Afar Region. Located in one of the planet's harshest environments, this site features bubbling acid pools, vibrant mineral terraces, and bizarre salt formations in neon greens, yellows, oranges, and reds. Formed by volcanic activity beneath a thick salt crust, Dallol sits at about 125 meters below sea level, making it the lowest subaerial volcanic vent on Earth. The colors stem from iron oxidation, sulfur deposits, and acidic brines interacting with hot magma below. As part of the Afar Triangle rift, it's a geological marvel where continents are tearing apart. Tourism is rebounding in 2025, with improved roads and eco-lodges, but extreme heat (up to 50°C) and acidity demand caution—no swimming here!</p>
+                                <img src="https://via.placeholder.com/600x400?text=Dallol+Sulfur+Springs" alt="Vibrant acid pools and sulfur terraces at Dallol, showcasing its psychedelic colors." style="display:block; margin:0 auto; width:100%; border-radius:10px; margin-bottom:20px;">
+                                <table>
+                                    <tr><th>Key Facts</th><th>Details</th></tr>
+                                    <tr><td>Location</td><td>Danakil Depression, Afar Region, Ethiopia (14.2417°N, 40.3°E)</td></tr>
+                                    <tr><td>Type</td><td>Hydrothermal Field (Phreatic Volcano)</td></tr>
+                                    <tr><td>Elevation</td><td>-125 m (-410 ft) below sea level</td></tr>
+                                    <tr><td>Last Activity</td><td>Ongoing hydrothermal; no major eruptions since 1926</td></tr>
+                                    <tr><td>Size</td><td>~10 km² active area</td></tr>
+                                    <tr><td>UNESCO Status</td><td>Part of Danakil UNESCO Global Geopark (proposed)</td></tr>
+                                    <tr><td>Annual Visitors</td><td>~10,000 (2025 est.; up 20% from 2024)</td></tr>
+                                    <tr><td>Average Temp</td><td>34°C year-round; hottest inhabited spot on Earth</td></tr>
+                                </table>
+                                <h3>Current Hydrothermal Status (As of October 19, 2025)</h3>
+                                <p>Dallol's activity is stable and continuous, driven by geothermal heat rather than explosive eruptions. Recent reports confirm:</p>
+                                <ul>
+                                    <li>Ongoing Features: Bubbling springs (up to 110°C), acidic ponds (pH 1), and geysers ejecting mineral-rich water. Colors remain vivid, with yellow sulfur, green iron salts, and red potash.</li>
+                                    <li>2025 Updates: No significant changes; minor brine pool shifts due to seasonal rains. Tours report enhanced access via new gravel roads from Berahle. X posts from October 2025 show vibrant sites, with visitors noting stable conditions.</li>
+                                    <li>Monitoring: Ethiopian Geological Institute tracks via satellites; low seismic activity in October 2025. No alerts for visitors.</li>
+                                    <li>Environmental Note: Climate change may intensify heat; sustainable tours emphasize minimal impact.</li>
+                                </ul>
+                                <img src="https://via.placeholder.com/300x200?text=Dallol+Panorama" alt="Panoramic view of Dallol’s surreal formations under a vast sky." style="float:left; width:50%; margin-right:20px; margin-bottom:20px;">
+                                <p>Note: Activity is predictable but can vary—check with operators for real-time conditions.</p>
+                                <div style="clear:both;"></div>
+                                <h3>Why Visit Dallol? Top Highlights</h3>
+                                <p>Dallol feels like another planet, blending geology, extremophiles, and Afar culture—perfect for photographers and adventurers. Key attractions:</p>
+                                <ol>
+                                    <li>Colorful Terraces & Pools: Walk among acid lakes and sulfur chimneys; hues from inorganic reactions create a "psychedelic" palette.</li>
+                                    <li>Salt Formations: Bizarre pillars, mushrooms, and canyons carved by erosion—some up to 10m tall.</li>
+                                    <li>Geysers & Fumaroles: Steam vents and bubbling mud pots; listen to the Earth's "breath."</li>
+                                    <li>Nearby Sites: Combine with Lake Assale salt mines (camel caravans) or Erta Ale volcano for a full Danakil experience.</li>
+                                    <li>Afar Interactions: Meet nomadic salt miners; learn about their resilient lifestyle.</li>
+                                </ol>
+                                <p>Pro Tip: Sunrise/mid-morning visits capture the best light for photos; avoid midday heat.</p>
+                                <h3>How to Get There & Suggested Itineraries</h3>
+                                <p>No independent access—mandatory organized tours with 4x4s, guides, and armed escorts due to remoteness and security. Base from Mekele or Semera.</p>
+                                <ul>
+                                    <li>By Air/Road: Fly to Mekele/Semera (from Addis, ~$100). Then 4–6 hr 4x4 drive via Berahle (gravel/off-road). Paving to Afdera completes in 2026.</li>
+                                    <li>Exploration: 1–2 hr walk on site (flat but uneven; wear sturdy boots for acid protection).</li>
+                                    <li>Permits: Included in tours (~$30); Afar entry required.</li>
+                                </ul>
+                                <table>
+                                    <tr><th>Duration</th><th>Highlights</th><th>Cost (USD, Per Person)</th><th>Operators</th></tr>
+                                    <tr><td>1–2 Days (Dallol Focus)</td><td>Drive from Semera, explore springs, salt mines, return.</td><td>$150–300 (group)</td><td>Dalol Tours, Brilliant Ethiopia</td></tr>
+                                    <tr><td>3–5 Days (Danakil Full)</td><td>Dallol + Erta Ale lava, Lake Karum, 1–2 nights camping.</td><td>$400–700 (incl. escort)</td><td>GetYourGuide, Rotate Ethiopia Tours</td></tr>
+                                    <tr><td>Luxury 7+ Days</td><td>Private 4x4, eco-lodges, geology talks; add Tigray sites.</td><td>$900+</td><td>Total Adventure, Volcano Adventures</td></tr>
+                                </table>
+                                <p>Day-by-Day Example (3-Day Tour):</p>
+                                <ul>
+                                    <li>Day 1: Fly to Semera; drive to Hamed Ela camp, sunset at salt flats.</li>
+                                    <li>Day 2: Early to Dallol for pools/terraces; visit mines, optional swim in Lake Afdera.</li>
+                                    <li>Day 3: Erta Ale add-on or return flight.</li>
+                                </ul>
+                                <h3>Practical Travel Tips for 2025</h3>
+                                <h4>Best Time to Visit</h4>
+                                <ul>
+                                    <li>Oct–Mar: Cooler (25–40°C); dry for safe access. Peak: Nov–Jan.</li>
+                                    <li>Avoid Apr–Sep: Rains cause floods; temps exceed 45°C.</li>
+                                    <li>2025 Events: Join Afar festivals (Jan) for cultural add-ons; book early.</li>
+                                </ul>
+                                <h4>Where to Stay & Eat</h4>
+                                <ul>
+                                    <li>Accommodations: Basic camps at Hamed Ela (tents, shared facilities); new eco-lodges like Dinsho (under construction). Luxury: Solar-powered options (~$40/night).</li>
+                                    <li>Food: Tour meals (injera, goat stew); pack electrolytes. Markets in Berahle for camel milk.</li>
+                                </ul>
+                                <h4>Budget Breakdown (Per Person, 3-Day Tour)</h4>
+                                <table>
+                                    <tr><th>Item</th><th>Cost (USD)</th></tr>
+                                    <tr><td>Tour Package</td><td>$400–600</td></tr>
+                                    <tr><td>Flights (Addis-Semera RT)</td><td>$200</td></tr>
+                                    <tr><td>Food/Extras</td><td>$40</td></tr>
+                                    <tr><td>Tips/Permits/Escort</td><td>$40–80</td></tr>
+                                    <tr><td>Total</td><td>~$680–920</td></tr>
+                                </table>
+                                <h3>Health & Safety Essentials</h3>
+                                <p>Dallol is extreme—toxic fumes, acid burns, and heat pose real risks. UK/US Advisory (Oct 2025): High caution; Eritrea border tensions.</p>
+                                <ul>
+                                    <li>Geohazards: Acidic ground (wear closed shoes); fumes cause irritation—masks recommended. No touching pools.</li>
+                                    <li>Heat/Dehydration: 5L water/day; UV gear, electrolytes; visit early.</li>
+                                    <li>Security: Armed escorts mandatory (~$20/day); past incidents (2017). Use licensed operators like Alfa Tour.</li>
+                                    <li>Health: Vaccinations (yellow fever, typhoid); malaria meds; insurance essential. Nearest clinic: Berahle.</li>
+                                    <li>Cultural Etiquette: Respect Afar; ask for photos; tip miners/guides (200 ETB/day).</li>
+                                    <li>Other Risks: Flash floods, unstable terrain—stick to paths.</li>
+                                </ul>
+                                <p>Insider Tip: Support locals by buying salt souvenirs; opt for eco-tours to aid communities.</p>
+                                <p>For bookings, contact Afar Tourism Bureau (+251-33-666-2000) or sites like GetYourGuide. Explore this surreal wonder safely! 😊</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tourism-card">
+                        <div class="tourism-image" style="background: linear-gradient(45deg, var(--salt-white), #E0E0E0);"></div>
+                        <div class="tourism-content">
+                            <h3>Salt Flats</h3>
+                            <p>Observe the ancient tradition of salt mining and camel caravans that have existed for centuries.</p>
+                            <button class="tourism-link" onclick="toggleDetails('salt-flats-details')">Toggle Details</button>
+                            <a href="#contact" class="tourism-link">Plan Your Visit</a>
+                            <div id="salt-flats-details" class="tourism-details details-hidden">
+                                <h2>Detailed Lake Assale Salt Flats Guide 2025 (The Ultimate Visitor's Handbook)</h2>
+                                <p>Lake Assale Salt Flats (also known as Lake Karum or Assale)—a shimmering expanse of crystalline salt in Ethiopia's Danakil Depression—represents one of the most ethereal and unforgiving landscapes on Earth. This hypersaline lake, lying 125 meters below sea level, spans about 200 km² and is encircled by endless white salt pans where Afar nomads mine salt using ancient methods. Formed in the tectonically active Afar Rift, the flats are a remnant of an ancient sea, with salt deposits up to 2 km thick. The site buzzes with camel caravans hauling 40kg salt blocks, creating a timeless scene amid blistering heat. As part of the Danakil's "alien" trio (with Dallol and Erta Ale), it's a must for adventurers, but requires guided tours due to extremes and security. In 2025, tourism is growing with better access roads, yet sustainability efforts focus on supporting local Afar communities.</p>
+                                <img src="https://via.placeholder.com/600x400?text=Lake+Assale+Salt+Flats" alt="Vast salt flats of Lake Assale at sunset, reflecting the dramatic Danakil sky." style="display:block; margin:0 auto; width:100%; border-radius:10px; margin-bottom:20px;">
+                                <table>
+                                    <tr><th>Key Facts</th><th>Details</th></tr>
+                                    <tr><td>Location</td><td>Danakil Depression, Afar Region, Ethiopia (14.0333°N, 40.3333°E)</td></tr>
+                                    <tr><td>Type</td><td>Hypersaline Lake & Salt Flats</td></tr>
+                                    <tr><td>Elevation</td><td>-125 m (-410 ft) below sea level</td></tr>
+                                    <tr><td>Size</td><td>~200 km² (lake); vast surrounding flats</td></tr>
+                                    <tr><td>Salt Depth</td><td>Up to 2 km in deposits</td></tr>
+                                    <tr><td>UNESCO Status</td><td>Part of Danakil UNESCO Global Geopark (proposed)</td></tr>
+                                    <tr><td>Annual Output</td><td>~1 million tons of salt mined</td></tr>
+                                    <tr><td>Annual Visitors</td><td>~8,000 (2025 est.; up 15% from 2024)</td></tr>
+                                    <tr><td>Average Temp</td><td>34–45°C; one of Earth's hottest spots</td></tr>
+                                </table>
+                                <h3>Current Status (As of October 19, 2025)</h3>
+                                <p>Lake Assale remains a stable, active mining site with no major geological changes reported. Hydrothermal influences from nearby Dallol keep some brine pools active, creating colorful edges in greens and blues. Recent 2025 updates include minor seasonal flooding from rare rains, enhancing mirror-like reflections but temporarily halting mining. Tours report vibrant camel activity, with over 500 caravans weekly during peak season. No seismic events noted in October; Ethiopian Geological Institute confirms safe for guided visits. Sustainability initiatives (e.g., fair-trade salt programs) are expanding via NGOs.</p>
+                                <img src="https://via.placeholder.com/300x200?text=Brine+Pool+in+Salt+Flats" alt="A striking brine pool amid the endless white salt crust of Lake Assale." style="float:left; width:50%; margin-right:20px; margin-bottom:20px;">
+                                <p>Note: Conditions vary seasonally—verify with operators for brine levels and mining ops.</p>
+                                <div style="clear:both;"></div>
+                                <h3>Why Visit Lake Assale? Top Highlights</h3>
+                                <p>Lake Assale offers a surreal blend of natural beauty, cultural immersion, and raw industry—evoking Bolivia's Uyuni but with volcanic flair. Key attractions:</p>
+                                <ol>
+                                    <li>Endless Salt Horizons: Walk on crunchy salt crusts; capture infinite reflections at dawn/dusk.</li>
+                                    <li>Afar Salt Mining: Witness nomads chiseling blocks with axes; join (safely) or buy souvenirs.</li>
+                                    <li>Camel Caravans: Iconic processions of 100+ camels hauling salt to highlands—a 1,000-year tradition.</li>
+                                    <li>Brine Pools & Formations: Turquoise pools and polygonal salt patterns; spot extremophile microbes.</li>
+                                    <li>Combined Danakil Sites: Often bundled with Dallol's colors or Erta Ale's lava for epic day trips.</li>
+                                </ol>
+                                <p>Pro Tip: Sunset visits transform the flats into a golden mirror—ideal for photography.</p>
+                                <h3>How to Get There & Suggested Itineraries</h3>
+                                <p>No solo access—mandatory 4x4 tours with guides and armed escorts for safety and navigation. Base from Semera or Mekele.</p>
+                                <ul>
+                                    <li>By Air/Road: Fly to Semera/Mekele (from Addis, ~$100). Then 3–5 hr 4x4 drive via Berahle (gravel; paving ongoing to 2026).</li>
+                                    <li>Exploration: 1–2 hrs on foot/vehicle; wear boots for salt terrain.</li>
+                                    <li>Permits: Tour-included (~$30); Afar entry required.</li>
+                                </ul>
+                                <table>
+                                    <tr><th>Duration</th><th>Highlights</th><th>Cost (USD, Per Person)</th><th>Operators</th></tr>
+                                    <tr><td>1–2 Days (Salt Focus)</td><td>Drive from Semera, mining demo, caravan watch, return.</td><td>$150–250 (group)</td><td>Great Ethiopian Tours, Road to Danakil</td></tr>
+                                    <tr><td>3–4 Days (Danakil Full)</td><td>Assale + Dallol springs, Erta Ale, 1 night camping.</td><td>$400–600 (incl. escort)</td><td>Orange Wayfarer, Arbaminch Tours</td></tr>
+                                    <tr><td>Luxury 5+ Days</td><td>Private 4x4, cultural homestays, geology guides.</td><td>$800+</td><td>Tadele Travel, Peek</td></tr>
+                                </table>
+                                <p>Day-by-Day Example (3-Day Tour):</p>
+                                <ul>
+                                    <li>Day 1: Fly to Semera; drive to Hamed Ela camp, afternoon salt flats.</li>
+                                    <li>Day 2: Full day mining/caravans; optional Dallol.</li>
+                                    <li>Day 3: Sunrise reflections, return flight.</li>
+                                </ul>
+                                <h3>Practical Travel Tips for 2025</h3>
+                                <h4>Best Time to Visit</h4>
+                                <ul>
+                                    <li>Oct–Mar: Cooler (25–40°C); peak caravans. Ideal: Nov–Jan.</li>
+                                    <li>Avoid Apr–Sep: Floods, 50°C+ heat.</li>
+                                    <li>2025 Events: Camel festival tie-ins (Jan); book 2 months ahead.</li>
+                                </ul>
+                                <h4>Where to Stay & Eat</h4>
+                                <ul>
+                                    <li>Accommodations: Basic camps near Hamed Ela (tents); new eco-lodges (~$30/night).</li>
+                                    <li>Food: Tour-provided injera/goat; try Afar salt-seasoned dishes. Pack water/electrolytes.</li>
+                                </ul>
+                                <h4>Budget Breakdown (Per Person, 3-Day Tour)</h4>
+                                <table>
+                                    <tr><th>Item</th><th>Cost (USD)</th></tr>
+                                    <tr><td>Tour Package</td><td>$400–550</td></tr>
+                                    <tr><td>Flights (Addis-Semera RT)</td><td>$200</td></tr>
+                                    <tr><td>Food/Extras</td><td>$40</td></tr>
+                                    <tr><td>Tips/Permits/Escort</td><td>$40–70</td></tr>
+                                    <tr><td>Total</td><td>~$680–860</td></tr>
+                                </table>
+                                <h3>Health & Safety Essentials</h3>
+                                <p>Extreme environment with heat, salt hazards, and regional risks. UK/US Advisory (Oct 2025): High caution; border issues.</p>
+                                <ul>
+                                    <li>Terrain Risks: Sharp salt cuts feet—wear closed boots; avoid brine (corrosive).</li>
+                                    <li>Heat/Dehydration: 5L water/day; UV protection, electrolytes.</li>
+                                    <li>Security: Armed escorts required (~$20/day); past incidents. Use licensed operators like ETT alternatives.</li>
+                                    <li>Health: Vaccinations (typhoid, hep A); malaria meds; insurance vital. Nearest clinic: Berahle.</li>
+                                    <li>Cultural Etiquette: Bargain respectfully for salt; ask before photos; tip miners (200 ETB).</li>
+                                    <li>Other Hazards: Dust storms, vehicle breakdowns—pack essentials.</li>
+                                </ul>
+                                <p>Insider Tip: Buy ethical salt to support Afar livelihoods; opt for community-led tours.</p>
+                                <p>For bookings, contact Afar Tourism Bureau (+251-33-666-2000) or sites like TripAdvisor. Discover this salty spectacle safely! 😊</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Departments Section -->
+        <section id="departments" aria-labelledby="departments-title">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="departments-title">Our Departments</h2>
+                    <p>Explore the various departments serving Berahle Wereda</p>
+                </div>
+                <div class="departments-grid">
+                    <div class="department-card administration">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-building" aria-hidden="true"></i>
+                            </div>
+                            <h3>Administration</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Handles general administration, governance, and public records.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="card-button">Contact</a>
+                        </div>
+                    </div>
+                    <div class="department-card economic">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                            </div>
+                            <h3>Economic Development</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Promotes economic growth, business support, and agricultural development.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="card-button">Contact</a>
+                        </div>
+                    </div>
+                    <div class="department-card social">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-users" aria-hidden="true"></i>
+                            </div>
+                            <h3>Social Affairs</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Manages social welfare, community programs, and family services.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="card-button">Contact</a>
+                        </div>
+                    </div>
+                    <div class="department-card justice">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-gavel" aria-hidden="true"></i>
+                            </div>
+                            <h3>Justice & Security</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Oversees legal matters, security, and dispute resolution.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="card-button">Contact</a>
+                        </div>
+                    </div>
+                    <div class="department-card health">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-heartbeat" aria-hidden="true"></i>
+                            </div>
+                            <h3>Health</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Provides healthcare services, disease prevention, and public health initiatives.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#contact" class="card-button">Contact</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section" aria-labelledby="faq-title">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="faq-title">Frequently Asked Questions</h2>
+                    <p>Find answers to common questions about Berahle Wereda</p>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)" role="button" aria-expanded="false">
+                            How can I obtain a birth certificate in Berahle Wereda?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Birth certificates can be obtained from the Administrative Services department. You'll need to provide proof of birth (hospital record or witness statement) and identification documents for both parents. The process typically takes 3-5 working days.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)" role="button" aria-expanded="false">
+                            What tourism activities are available in Berahle Wereda?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Berahle Wereda offers unique tourism experiences including visits to the Danakil Depression, observing traditional salt mining, cultural tours of Afar villages, and guided hikes to volcanic areas. All tourists must be accompanied by licensed guides for safety.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)" role="button" aria-expanded="false">
+                            How can I start a business in Berahle Wereda?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            To start a business, visit the Economic Development department with your business proposal, identification documents, and proof of address. The department provides guidance on licensing, regulations, and available support for local entrepreneurs.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)" role="button" aria-expanded="false">
+                            What healthcare services are available in the wereda?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Berahle Wereda has a primary hospital and several health centers providing basic healthcare, maternal and child health services, immunizations, and treatment for common illnesses. Specialized cases may be referred to larger facilities in Semera or Mekele.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)" role="button" aria-expanded="false">
+                            How can I report a public safety concern?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Public safety concerns can be reported to the Justice & Security department during office hours or to the local police station. For emergencies, contact the wereda administration office which can direct you to the appropriate authorities.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" aria-labelledby="contact-title">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="contact-title">Contact Us</h2>
+                    <p>Get in touch with Berahle Wereda administration</p>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h2>Our Information</h2>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <h3>Address</h3>
+                                    <p>Berahle Wereda Administration<br>Zone 2, Afar Region<br>Ethiopia</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <h3>Phone</h3>
+                                    <p>+251-957-909-085 (Wereda Office)<br>+251-XXX-XXX-XXX (Afar Bureau)</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <h3>Email</h3>
+                                    <p>info.berahlewerda@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-clock" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <h3>Office Hours</h3>
+                                    <p>Monday - Friday: 8:30 AM - 5:30 PM<br>Saturday: 9:00 AM - 1:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <h2>Send Us a Message</h2>
+                        <form id="contactForm" aria-label="Contact form">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" required aria-required="true">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required aria-required="true">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <select id="subject" name="subject" required aria-required="true">
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="services">Service Request</option>
+                                    <option value="tourism">Tourism Information</option>
+                                    <option value="complaint">Complaint</option>
+                                    <option value="suggestion">Suggestion</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" required aria-required="true"></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Send Message</button>
+                            <div id="formMessage" class="form-message"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer aria-label="Footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>Berahle Wereda</h3>
+                    <p>Administrative Zone 2, Afar Region, Ethiopia</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#tourism">Tourism</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#services">Administrative Services</a></li>
+                        <li><a href="#services">Social Services</a></li>
+                        <li><a href="#services">Education & Health</a></li>
+                        <li><a href="#departments">All Departments</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-phone" aria-hidden="true"></i> +251-957-909-085</li>
+                        <li><i class="fas fa-envelope" aria-hidden="true"></i> info.berahlewerda@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Berahle Town, Afar</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Berahle Wereda Administration. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
