@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Joke Generator</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #joke {
+            font-size: 24px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #loading {
+            display: none;
+            font-size: 20px;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Joke Generator</h1>
+    <div id="joke">Press the button to get a random joke!</div>
+    <button id="get-joke">Get Joke</button>
+    <div id="loading">Loading...</div>
+    <button id="copy-joke" style="display: none;">Copy Joke</button>
+    <script>
+        async function fetchJoke() {
+            const jokeElement = document.getElementById('joke');
+            const loadingElement = document.getElementById('loading');
+            const copyButton = document.getElementById('copy-joke');
+            jokeElement.textContent = '';
+            loadingElement.style.display = 'block';
+            copyButton.style.display = 'none';
+
+            try {
+                const response = await fetch('https://v2.jokeapi.dev/joke/Any');
+                const jokeData = await response.json();
+
+                if (jokeData.setup) {
+                    jokeElement.innerHTML = `<strong>${jokeData.setup}</strong><br>${jokeData.delivery}`;
+                } else {
+                    jokeElement.textContent = jokeData.joke;
+                }
+                copyButton.style.display = 'inline';
+            } catch (error) {
+                jokeElement.textContent = 'Failed to fetch a joke!';
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+
+        document.getElementById('get-joke').addEventListener('click', fetchJoke);
+
+        document.getElementById('copy-joke').addEventListener('click', () => {
+            const jokeText = document.getElementById('joke').textContent;
+            navigator.clipboard.writeText(jokeText).then(() => {
+                alert('Joke copied to clipboard!');
+            });
+        });
+    </script>
+</body>
+</html>
